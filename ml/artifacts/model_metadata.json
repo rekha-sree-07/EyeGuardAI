@@ -1,0 +1,25 @@
+{
+  "model_name": "Random Forest",
+  "features": [
+    "Patient Age",
+    "Patient Sex"
+  ],
+  "classes": [
+    "A",
+    "C",
+    "D",
+    "G",
+    "H",
+    "M",
+    "N",
+    "O"
+  ],
+  "target_column": "labels",
+  "excluded_image_features": [
+    "Left-Fundus",
+    "Right-Fundus"
+  ],
+  "confidence_threshold": 0.5,
+  "threshold_is_provisional": true,
+  "note": "Structured-data research prototype. Confidence threshold must be validated; predictions are not clinical diagnoses."
+}
