@@ -43,6 +43,7 @@ function App() {
   const [result, setResult] = useState(null);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [threshold, setThreshold] = useState(70);
 
   const updateField = (name, value) => {
     setValues((previous) => ({ ...previous, [name]: value }));
@@ -60,7 +61,9 @@ function App() {
     setResult(null);
     setLoading(true);
 
-    const payload = {};
+    const payload = {
+    threshold: threshold / 100,
+    };
     fields.forEach(({ name }) => {
       const value = values[name];
       payload[name] = value === undefined || value.trim() === ""
@@ -234,7 +237,30 @@ function App() {
                   </label>
                 ))}
               </div>
+                <div className="threshold-control">
+  <div className="threshold-heading">
+    <label htmlFor="threshold">
+      Minimum confidence threshold
+    </label>
 
+    <strong>{threshold}%</strong>
+  </div>
+
+  <input
+    id="threshold"
+    type="range"
+    min="50"
+    max="95"
+    step="5"
+    value={threshold}
+    onChange={(event) => setThreshold(Number(event.target.value))}
+  />
+
+  <p>
+    Predictions below this threshold will be flagged for review.
+    Changing the threshold does not change the model's measured accuracy.
+  </p>
+</div>
               <div className="form-footnote">
                 <span className="footnote-icon">i</span>
                 <span>Use the same coding and units as the PAPILA dataset.</span>
@@ -277,7 +303,60 @@ function App() {
                 <p className="result-description">
                   {diagnosis?.description || "The model returned a classification for this input."}
                 </p>
+                <div className="prediction-summary">
+  <div className="summary-item">
+    <span>Prediction confidence</span>
+    <strong>{result.confidence_percent}%</strong>
+  </div>
 
+  <div className="summary-item">
+    <span>Selected threshold</span>
+    <strong>{result.threshold_percent}%</strong>
+  </div>
+
+  <div className="summary-item">
+    <span>Input completeness</span>
+    <strong>
+      {result.input_completeness?.provided ?? "—"} /{" "}
+      {result.input_completeness?.total ?? "—"}
+    </strong>
+  </div>
+
+  <div className="summary-item">
+    <span>Fields provided</span>
+    <strong>
+      {result.input_completeness?.percent ?? "—"}%
+    </strong>
+  </div>
+</div>
+
+<div
+  className={`confidence-status ${
+    result.review_recommended ? "low-confidence" : "meets-threshold"
+  }`}
+  role="status"
+>
+  <strong>
+    {result.review_recommended
+      ? "Below confidence threshold"
+      : "Meets confidence threshold"}
+  </strong>
+
+  <p>
+    {result.review_recommended
+      ? "The model's confidence is below your selected threshold. Treat this result as uncertain."
+      : "The model's confidence meets your selected threshold. This does not guarantee a correct prediction."}
+  </p>
+</div>
+
+{result.input_completeness?.missing_features?.length > 0 && (
+  <div className="missing-fields">
+    <strong>Missing measurements</strong>
+    <p>
+      {result.input_completeness.missing_features.join(", ")}
+    </p>
+  </div>
+)}
                 <div className="probability-heading">
                   <span>CLASS PROBABILITIES</span><span>MODEL OUTPUT</span>
                 </div>

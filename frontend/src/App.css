@@ -1330,3 +1330,113 @@ button:focus-visible, a:focus-visible, input:focus-visible {
     animation-duration: 0.01ms !important;
   }
 }
+/* Confidence threshold slider */
+.threshold-control {
+  margin-top: 22px;
+  padding: 15px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(199, 176, 255, 0.04);
+}
+
+.threshold-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  color: #e5dce9;
+  font-size: 11px;
+}
+
+.threshold-heading strong {
+  color: var(--lime);
+  font: 16px var(--display);
+}
+
+.threshold-control input[type="range"] {
+  width: 100%;
+  margin: 15px 0 5px;
+  accent-color: var(--lime);
+  cursor: pointer;
+}
+
+.threshold-control p {
+  margin: 6px 0 0;
+  color: #aaa0b2;
+  font-size: 10px;
+  line-height: 1.7;
+}
+
+/* Prediction summary */
+.prediction-summary {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin: 22px 0 14px;
+}
+
+.summary-item {
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.summary-item span {
+  display: block;
+  margin-bottom: 8px;
+  color: #aaa0b2;
+  font-size: 10px;
+  line-height: 1.5;
+}
+
+.summary-item strong {
+  color: var(--lime);
+  font: 600 20px var(--display);
+}
+
+/* Confidence status */
+.confidence-status,
+.missing-fields {
+  margin: 10px 0;
+  padding: 13px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  font-size: 11px;
+  line-height: 1.6;
+}
+
+.confidence-status strong,
+.missing-fields strong {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.confidence-status p,
+.missing-fields p {
+  margin: 0;
+  color: #c4b9cd;
+  overflow-wrap: anywhere;
+}
+
+.meets-threshold {
+  border-color: rgba(215, 255, 115, 0.35);
+  background: rgba(215, 255, 115, 0.05);
+}
+
+.meets-threshold strong {
+  color: var(--lime);
+}
+
+.low-confidence {
+  border-color: rgba(255, 158, 182, 0.4);
+  background: rgba(255, 158, 182, 0.06);
+}
+
+.low-confidence strong {
+  color: #ffb2c5;
+}
+
+.missing-fields {
+  border-color: rgba(199, 176, 255, 0.3);
+}

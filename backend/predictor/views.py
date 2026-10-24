@@ -101,6 +101,25 @@ def prepare_sample(record, feature_names):
 
 def predict_record(model, feature_names, record, threshold):
     values = prepare_sample(record, feature_names)
+
+    # Count how many input features have been provided.
+    missing_features = [
+        name for name, value in values.items()
+        if math.isnan(value)
+    ]
+
+    total_features = len(feature_names)
+    provided_features = total_features - len(missing_features)
+
+    input_completeness = {
+        "provided": provided_features,
+        "total": total_features,
+        "percent": round(
+        (provided_features / total_features) * 100, 1
+        ) if total_features else 0,
+        "missing_features": missing_features,
+    }
+
     sample = pd.DataFrame([values], columns=feature_names)
 
     prediction = int(model.predict(sample)[0])
@@ -118,6 +137,7 @@ def predict_record(model, feature_names, record, threshold):
         "class_name": CLASS_NAMES.get(prediction, "Unknown"),
         "confidence": round(confidence, 4),
         "confidence_percent": round(confidence * 100, 2),
+        "input_completeness": input_completeness,
         "probabilities": probability_map,
         "threshold": threshold,
         "threshold_percent": round(threshold * 100, 2),
