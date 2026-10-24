@@ -1,6 +1,7 @@
 Django
 gunicorn
 django-cors-headers
+djangorestframework
 joblib
 scikit-learn
 pandas
